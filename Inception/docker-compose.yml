@@ -1,0 +1,67 @@
+services:
+  mariadb:
+    build: ./src/mariadb
+    container_name: mariadb
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    networks:
+      - inception_network
+    
+  wordpress:
+    build: ./src/wordpress
+    container_name: wordpress
+    restart: always
+    env_file:
+      - .env
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WP_ADMIN_USER: ${WP_ADMIN_USER}
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+      WP_USER: ${WP_USER}
+      WP_PASSWORD: ${WP_PASSWORD}
+      WP_EMAIL: ${WP_EMAIL}
+    volumes:
+      - wordpress-data:/var/www/html
+    networks:
+      - inception_network
+      
+  nginx:
+    build: ./src/nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress-data:/var/www/html
+    networks:
+      - inception_network
+
+volumes:
+  mariadb-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/hulefevr/data/mariadb
+      o: bind
+  wordpress-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/hulefevr/data/wordpress
+      o: bind
+
+networks:
+  inception_network:
+    driver: bridge
