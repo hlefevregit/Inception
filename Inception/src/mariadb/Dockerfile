@@ -1,5 +1,5 @@
-FROM mariadb:10.7
+FROM mariadb:10.11
 
-COPY init.sql /docker-entrypoint-initdb.d/
+COPY ./conf.d /etc/mysql/conf.d
 
-CMD ["mysqld"]
+CMD [ "mysqld" ]

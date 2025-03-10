@@ -1,28 +1,33 @@
 COMPOSE_FILE = docker-compose.yml
-PROJECT_NAME = Inception
+PROJECT_NAME = inception
+PORT ?=8443
 
 .PHONY: build up down restart logs prune clean rebuild
 
-build:
-	docker-compose -f $(COMPOSE_FILE) -p $(PROJECT_NAME) build
+# Makefile - Gestion Docker Inception
+
 
 up:
-	docker-compose -f $(COMPOSE_FILE) -p $(PROJECT_NAME) up -d
+	@echo "🔼 Démarrage des services sur le port $(PORT)..."
+	# @sed "s/REPLACE_PORT/$(PORT)/g" $(COMPOSE_FILE).template > $(COMPOSE_FILE)
+	docker-compose -f $(COMPOSE_FILE) -p $(PROJECT_NAME) up -d --build
 
 down:
+	@echo "🧹 Arrêt des services"
 	docker-compose -f $(COMPOSE_FILE) -p $(PROJECT_NAME) down
 
-restart:
-	docker-compose -f $(COMPOSE_FILE) -p $(PROJECT_NAME) down
-	docker-compose -f $(COMPOSE_FILE) -p $(PROJECT_NAME) up -d
+prune:
+	@echo "🧼 Nettoyage complet"
+	docker-compose -f $(COMPOSE_FILE) -p $(PROJECT_NAME) down -v --remove-orphans
+	docker volume prune -f
+	docker container prune -f
 
 logs:
 	docker-compose -f $(COMPOSE_FILE) -p $(PROJECT_NAME) logs -f
 
-prune:
-	docker-compose -f $(COMPOSE_FILE) -p $(PROJECT_NAME) down -v --remove-orphans --rmi all
-	docker-compose -f $(COMPOSE_FILE) -p $(PROJECT_NAME) rm -f
-	docker volume prune -f
+restart: down up
+
+
 
 clean:
 	docker stop $$(docker ps -aq)
