@@ -9,7 +9,7 @@ PORT ?=8443
 
 up:
 	@echo "🔼 Démarrage des services sur le port $(PORT)..."
-	# @sed "s/REPLACE_PORT/$(PORT)/g" $(COMPOSE_FILE).template > $(COMPOSE_FILE)
+	# @sed "s/REPLACE_PORT/$(PORT)/g" $(COMPOSE_FILE) > $(COMPOSE_FILE)
 	docker-compose -f $(COMPOSE_FILE) -p $(PROJECT_NAME) up -d --build
 
 down:

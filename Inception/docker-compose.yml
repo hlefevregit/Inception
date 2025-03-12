@@ -6,7 +6,7 @@ services:
     container_name: nginx
     restart: always
     ports:
-      - "8443:80"
+      - "443:443"
     volumes:
       - wordpress_data:/var/www/html
       - ./src/nginx/ssl:/etc/nginx/ssl:ro
@@ -22,7 +22,7 @@ services:
     expose:
       - "9000"
     environment:
-      WORDPRESS_DB_HOST: mariadb:3306
+      WORDPRESS_DB_HOST: mariadb
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
       WORDPRESS_DB_USER: ${MYSQL_USER}
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
@@ -65,6 +65,30 @@ services:
     build: ./src/bonus/redis
     container_name: redis
     restart: always
+    networks:
+      - inception_network
+
+
+  ftp:
+    build: ./src/bonus/ftp
+    container_name: ftp
+    restart: always
+    ports:
+      - "2121:21"
+      - "21100-21110:21100-21110"
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - inception_network
+
+  adminer:
+    build: ./src/bonus/adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mariadb
     networks:
       - inception_network
 
