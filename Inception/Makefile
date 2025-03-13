@@ -46,4 +46,4 @@ rebuild:
 	docker-compose -f $(COMPOSE_FILE) -p $(PROJECT_NAME) build --no-cache
 	@echo "Démarrage des services"
 	docker-compose -f $(COMPOSE_FILE) -p $(PROJECT_NAME) up -d
-	@echo "Done :)""
+	@echo "Done :)"

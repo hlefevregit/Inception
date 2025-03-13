@@ -21,5 +21,5 @@ RUN curl -o adminer.css https://raw.githubusercontent.com/pematon/adminer-theme/
 
 RUN chmod 644 /var/www/html/index.php /var/www/html/adminer.css
 
-EXPOSE 8080
+EXPOSE 8082
 CMD ["php81", "-S", "0.0.0.0:8080", "-t", "/var/www/html"]
