@@ -14,7 +14,8 @@ up:
 
 down:
 	@echo "🧹 Arrêt des services"
-	docker-compose -f $(COMPOSE_FILE) -p $(PROJECT_NAME) down
+	docker-compose -f $(COMPOSE_FILE) -p $(PROJECT_NAME) down || true
+	docker network rm inception_inception_network || true
 
 prune:
 	@echo "🧼 Nettoyage complet"

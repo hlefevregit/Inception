@@ -21,6 +21,7 @@ services:
     restart: always
     expose:
       - "9000"
+    env_file: .env
     environment:
       WORDPRESS_DB_HOST: mariadb
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
@@ -49,6 +50,7 @@ services:
     build: ./src/mariadb
     container_name: mariadb
     restart: always
+    env_file: .env
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
