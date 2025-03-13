@@ -1,4 +1,4 @@
-COMPOSE_FILE = docker-compose.yml
+COMPOSE_FILE = ./src/docker-compose.yml
 PROJECT_NAME = inception
 PORT ?=8443
 
