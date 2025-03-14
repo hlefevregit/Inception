@@ -2,18 +2,13 @@ FROM alpine:3.20
 
 RUN apk update && apk add --no-cache nginx openssl
 
-# Création utilisateur nginx (www-data)
 RUN getent group www-data || addgroup -g 82 -S www-data && \
     getent passwd www-data || adduser -u 82 -D -S -G www-data www-data
 
-# Créer les dossiers nécessaires
 
-
-# Copier la configuration nginx
 COPY conf/nginx.conf /etc/nginx/nginx.conf
 COPY conf/default.conf /etc/nginx/conf.d/default.conf
 
-# Copier les certificats SSL
 COPY ssl/cert.pem /etc/nginx/ssl/cert.pem
 COPY ssl/cert.key /etc/nginx/ssl/cert.key
 

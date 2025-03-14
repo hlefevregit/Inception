@@ -4,9 +4,6 @@ PORT ?=8443
 
 .PHONY: build up down restart logs prune clean rebuild
 
-# Makefile - Gestion Docker Inception
-
-
 up:
 	@echo "🔼 Démarrage des services sur le port $(PORT)..."
 	# @sed "s/REPLACE_PORT/$(PORT)/g" $(COMPOSE_FILE) > $(COMPOSE_FILE)

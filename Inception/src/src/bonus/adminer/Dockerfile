@@ -1,25 +1,41 @@
 FROM alpine:3.20
 
-RUN apk update && apk add --no-cache \
-    php81 \
-    php81-mysqli \
-    php81-session \
-    php81-openssl \
-    php81-pdo_mysql \
-    php81-mbstring \
-    php81-json \
-    php81-curl \
-    php81-dom \
-    php81-simplexml \
-    curl
+RUN apk update && \
+  	apk add --no-cache \
+	curl \
+	less \
+	mariadb-client \
+	php83 \
+	php83-fpm \
+	php83-common \
+	php83-session \
+	php83-iconv \
+	php83-json \
+	php83-gd \
+	php83-curl \
+	php83-xml \
+	php83-mysqli \
+	php83-imap \
+	php83-pdo \
+	php83-pdo_mysql \
+	php83-soap \
+	php83-posix \
+	php83-gettext \
+	php83-ldap \
+	php83-ctype \
+	php83-dom \
+	php83-simplexml
 
-WORKDIR /var/www/html
 
-RUN curl -o index.php https://github.com/vrana/adminer/releases/download/v4.8.1/adminer-4.8.1.php
+RUN \
+	curl -L -O https://github.com/vrana/adminer/releases/download/v4.8.1/adminer-4.8.1.php && \
+	mkdir -p /var/www/html && \
+	mv ./adminer-4.8.1.php /var/www/html/index.php && \
+	adduser -u 82 -D -S -G www-data www-data
 
-RUN curl -o adminer.css https://raw.githubusercontent.com/pematon/adminer-theme/master/adminer.css
+COPY /conf/www.conf /etc/php83/php-fpm.d/www.conf
 
-RUN chmod 644 /var/www/html/index.php /var/www/html/adminer.css
+EXPOSE 9000
+STOPSIGNAL SIGQUIT
 
-EXPOSE 8082
-CMD ["php81", "-S", "0.0.0.0:8080", "-t", "/var/www/html"]
+CMD ["php-fpm83", "--nodaemonize"]

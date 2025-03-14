@@ -1,7 +1,6 @@
 FROM alpine:3.20.0
 EXPOSE 9000
 
-# Install required packages and dependencies
 RUN apk update
 RUN apk add --no-cache \
     wget \
@@ -19,20 +18,16 @@ RUN addgroup -g 82 -S www-data || true && adduser -u 82 -D -S -G www-data www-da
 RUN id www-data
 
 
-# Install wordpress using wget
 RUN mkdir -p /var/www
 RUN chown -R root:root /var/www
 
-# Configure wordpress
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
     chmod 755 wp-cli.phar && \
     mv wp-cli.phar /usr/local/bin/wp
 RUN rm -rf /var/www/html/wp-config-sample.php
 
-# Configure php-fpm
 COPY www.conf /etc/php83/php-fpm.d/www.conf
 
-# Start wordpress
 COPY docker-entrypoint.sh /
 RUN chmod 755 /docker-entrypoint.sh
 CMD [ "/docker-entrypoint.sh" ]

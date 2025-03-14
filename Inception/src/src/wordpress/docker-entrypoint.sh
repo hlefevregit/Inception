@@ -41,4 +41,4 @@ chmod -R 755 /var/www/html
 echo "Wordpress setup completed"
 
 echo "Starting php-fpm83..."
-exec php-fpm83 -F -R # Start PHP-FPM
+exec php-fpm83 -F -R

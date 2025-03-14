@@ -1,13 +1,16 @@
-FROM alpine:3.20
+FROM alpine:3.18
 
-RUN apk update && apk add --no-cache vsftpd dbus shadow
+RUN apk update && apk add --no-cache vsftpd
 
-RUN useradd -m ftpuser && echo "ftpuser:ftppassword" | chpasswd
+RUN adduser -D -h /home/ftpuser ftpuser && \
+    echo "ftpuser:ftp1234" | chpasswd
+
+RUN mkdir -p /home/ftpuser/files && \
+    chown root:root /home/ftpuser && chmod 755 /home/ftpuser && \
+    chown -R ftpuser:ftpuser /home/ftpuser/files
 
 COPY vsftpd.conf /etc/vsftpd/vsftpd.conf
 
-RUN mkdir -p /var/log/vsftpd
-
-EXPOSE 21
+EXPOSE 21 21100-21110
 
 CMD ["/usr/sbin/vsftpd", "/etc/vsftpd/vsftpd.conf"]
