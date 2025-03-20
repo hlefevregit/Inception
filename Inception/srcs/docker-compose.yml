@@ -115,18 +115,18 @@ services:
       - inception_network
 
 volumes:
-  wordpress:
+  wordpress_data:
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
       device: '/home/hulefevr/data/wordpress'
-  mariadb:
+  mariadb_data:
     driver: local
     driver_opts:
       type: 'none' 
       o: 'bind'
-      device: '/home/hulefevr/data/mariadb'	
+      device: '/home/hulefevr/data/mariadb'
   uptime-kuma-data:
     driver: local
     driver_opts:
